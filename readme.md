@@ -4,7 +4,7 @@ This package is a simple wrapper for working w/ the [Mailchimp API](http://apido
 
 ## Install ##
 
-Copy the config file to your ``application/config/`` folder, and input the proper information.
+Copy the config file to ``application/config/mailchimp.php`` and input the proper information.
 
 ## Usage ##
 
