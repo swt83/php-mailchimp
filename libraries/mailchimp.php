@@ -18,29 +18,27 @@ class Mailchimp
 		
 		// determine endpoint
 		list($ignore, $server) = explode('-', $api_key);
-		$endpoint = 'https://'.$server.'.api.mailchimp.com/1.3/';
+		$endpoint = 'https://'.$server.'.api.mailchimp.com/1.3/?method='.self::camelize($method);
 		
-		// build query
-		$params = array(
-			'output' => 'json',
-			'method' => self::camelize($method),
-		);
+		// build payload
 		$arguments = isset($args[0]) ? $args[0] : array();
-		$query = http_build_query($params + array('apikey'=>$api_key) + $arguments);
+		$payload = urlencode(json_encode(array('apikey'=>$api_key) + $arguments));
 		
 		// setup curl request
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $endpoint.'?'.$query);
+		curl_setopt($ch, CURLOPT_URL, $endpoint);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
 		$response = curl_exec($ch);
 
 		// catch errors
 		if (curl_errno($ch))
 		{
-			$errors = curl_error($ch);
+			#$errors = curl_error($ch); // for debug
 			curl_close($ch);
 			
 			// return false
@@ -57,6 +55,6 @@ class Mailchimp
 	
 	private static function camelize($word)
 	{
-		return preg_replace('/(^|_)(.)/e', "strtoupper('\\2')", strval($word));
+		return lcfirst(preg_replace('/(^|_)(.)/e', "strtoupper('\\2')", strval($word)));
 	}
 }
