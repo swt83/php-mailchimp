@@ -1,11 +1,11 @@
 <?php
 
 /**
- * A LaravelPHP Package for working w/ Mailchimp.
+ * A LaravelPHP package for working w/ Mailchimp.
  *
  * @package    Mailchimp
  * @author     Scott Travis <scott.w.travis@gmail.com>
- * @link       http://github.com/swt83
+ * @link       http://github.com/swt83/laravel-mailchimp
  * @license    MIT License
  */
 
@@ -14,7 +14,7 @@ class Mailchimp
 	public static function __callStatic($method, $args)
 	{
 		// load api key
-		$api_key = Config::get('mailchimp::mailchimp.api_key');
+		$api_key = Config::get('mailchimp.api_key'); // get from application, not bundle
 		
 		// determine endpoint
 		list($ignore, $server) = explode('-', $api_key);
@@ -23,7 +23,7 @@ class Mailchimp
 		// build query
 		$params = array(
 			'output' => 'json',
-			'method' => $method,
+			'method' => self::camelize($method),
 		);
 		$arguments = isset($args[0]) ? $args[0] : array();
 		$query = http_build_query($params + array('apikey'=>$api_key) + $arguments);
@@ -53,5 +53,10 @@ class Mailchimp
 			// return array
 			return json_decode($response);
 		}
+	}
+	
+	private static function camelize($word)
+	{
+		return preg_replace('/(^|_)(.)/e', "strtoupper('\\2')", strval($word));
 	}
 }
