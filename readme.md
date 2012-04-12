@@ -8,7 +8,7 @@ Copy the config file to ``application/config/mailchimp.php`` and input the prope
 
 ## Usage ##
 
-Call the desired method and pass the params as a single array:
+Call the desired method and pass the params as a single array.  Don't worry about passing the API key.
 
 ```php
 $params = array(
