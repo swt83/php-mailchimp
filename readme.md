@@ -4,6 +4,14 @@ This package is a simple wrapper for working w/ the [Mailchimp API](http://apido
 
 ## Install ##
 
+In ``application/bundles.php`` add:
+
+```php
+'mailchimp' => array('auto' => true),
+```
+
+## Config ##
+
 Copy the config file to ``application/config/mailchimp.php`` and input the proper information.
 
 ## Usage ##
