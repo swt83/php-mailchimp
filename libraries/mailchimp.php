@@ -18,7 +18,7 @@ class Mailchimp
 		
 		// determine endpoint
 		list($ignore, $server) = explode('-', $api_key);
-		$endpoint = 'https://'.$server.'.api.mailchimp.com/1.3/?method='.self::camelize($method);
+		$endpoint = 'https://'.$server.'.api.mailchimp.com/1.3/?method='.self::camelcase($method);
 		
 		// build payload
 		$arguments = isset($args[0]) ? $args[0] : array();
@@ -53,7 +53,7 @@ class Mailchimp
 		}
 	}
 	
-	private static function camelize($str)
+	private static function camelcase($str)
 	{
 		return lcfirst(preg_replace('/(^|_)(.)/e', "strtoupper('\\2')", strval($str)));
 	}
