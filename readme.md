@@ -10,9 +10,7 @@ In ``application/bundles.php`` add:
 'mailchimp' => array('auto' => true),
 ```
 
-## Config ##
-
-Copy the config file to ``application/config/mailchimp.php`` and input the proper information.
+Copy the sample config file to ``application/config/mailchimp.php`` and input the proper information.
 
 ## Usage ##
 
