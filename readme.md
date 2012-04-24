@@ -11,11 +11,10 @@ Copy the config file to ``application/config/mailchimp.php`` and input the prope
 Call the desired method and pass the params as a single array.  Don't worry about passing the API key.
 
 ```php
-$params = array(
+$response = Mailchimp::list_subscribe(array(
 	'id' => '1234567',
 	'email_address' => 'foo@bar.com',
-);
-$response = Mailchimp::list_subscribe($params);
+));
 ```
 
 Just make sure you pass all the required fields.

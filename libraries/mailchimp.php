@@ -14,7 +14,7 @@ class Mailchimp
 	public static function __callStatic($method, $args)
 	{
 		// load api key
-		$api_key = Config::get('mailchimp.api_key'); // get from application, not bundle
+		$api_key = Config::get('mailchimp.api_key');
 		
 		// determine endpoint
 		list($ignore, $server) = explode('-', $api_key);
@@ -38,7 +38,7 @@ class Mailchimp
 		// catch errors
 		if (curl_errno($ch))
 		{
-			#$errors = curl_error($ch); // for debug
+			#$errors = curl_error($ch);
 			curl_close($ch);
 			
 			// return false
@@ -53,8 +53,8 @@ class Mailchimp
 		}
 	}
 	
-	private static function camelize($word)
+	private static function camelize($str)
 	{
-		return lcfirst(preg_replace('/(^|_)(.)/e', "strtoupper('\\2')", strval($word)));
+		return lcfirst(preg_replace('/(^|_)(.)/e', "strtoupper('\\2')", strval($str)));
 	}
 }
