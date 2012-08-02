@@ -10,6 +10,8 @@ In ``application/bundles.php`` add:
 'mailchimp' => array('auto' => true),
 ```
 
+### Config ###
+
 Copy the sample config file to ``application/config/mailchimp.php`` and input the proper information.
 
 ## Usage ##
@@ -24,3 +26,11 @@ $response = Mailchimp::list_subscribe(array(
 ```
 
 Just make sure you pass all the required fields.
+
+## Helper Tasks ##
+
+I've included a helper task for printing all lists associated w/ your account.  Makes it easy to find list ids.
+
+```
+$ php artisan mailchimp::lists
+```
