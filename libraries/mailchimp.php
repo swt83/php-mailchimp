@@ -14,7 +14,7 @@ class Mailchimp
 	public static function __callStatic($method, $args)
 	{
 		// load api key
-		$api_key = Config::get('mailchimp.api_key');
+		$api_key = Config::get('mailchimp::mailchimp.api_key');
 		
 		// determine endpoint
 		list($ignore, $server) = explode('-', $api_key);
@@ -26,6 +26,10 @@ class Mailchimp
 		
 		// setup curl request
 		$ch = curl_init();
+		if (Request::env() == Config::get('mailchimp::mailchimp.localhost_env_name')
+		{
+			curl_setopt ($ch, CURLOPT_CAINFO, dirname(__FILE__)."/cacert.pem");
+		}
 		curl_setopt($ch, CURLOPT_URL, $endpoint);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
