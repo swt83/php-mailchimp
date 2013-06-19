@@ -14,7 +14,7 @@ class Mailchimp
 	public static function __callStatic($method, $args)
 	{
 		// load api key
-		$api_key = Config::get('mailchimp.api_key');
+		$api_key = Config::get('mailchimp::mailchimp.api_key');
 		
 		// determine endpoint
 		list($ignore, $server) = explode('-', $api_key);
