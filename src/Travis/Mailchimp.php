@@ -66,7 +66,12 @@ class Mailchimp {
      */
     protected static function camelcase($str)
     {
-        return lcfirst(preg_replace('/(^|_)(.)/e', "strtoupper('\\2')", strval($str)));
-    }
+        return lcfirst(
+            preg_replace_callback('/(^|_)(.)/', function($matches)
+            {
+                return strtoupper($matches[2]);
+            }, strval($str))
+        );
+   }
 
 }
