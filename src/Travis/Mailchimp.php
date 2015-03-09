@@ -8,7 +8,6 @@ class Mailchimp {
      * Method for handling API calls.
      *
      * @param   string  $method
-     * @param   string  $apikey
      * @param   array   $payload
      * @return  object
      */
