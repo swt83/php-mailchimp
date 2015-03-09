@@ -1,6 +1,6 @@
 # Mailchimp
 
-A PHP library for working w/ the [Mailchimp API](http://apidocs.mailchimp.com/api/2.0/).
+A PHP library for working w/ the [Mailchimp API](http://apidocs.mailchimp.com/api/2.0/) (v2.0).
 
 ## Install
 
