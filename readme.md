@@ -1,6 +1,6 @@
 # Mailchimp
 
-A PHP library for working w/ the [Mailchimp API](http://apidocs.mailchimp.com/api/1.3/).
+A PHP library for working w/ the [Mailchimp API](http://apidocs.mailchimp.com/api/2.0/).
 
 ## Install
 
@@ -8,14 +8,22 @@ Normal install via Composer.
 
 ## Usage
 
-Call the desired method and pass the params as a single array.
+Call the ``run`` method and pass two params, the first being your desired API method and the second being your payload as a single array.
 
 ```php
-$response = Travis\Mailchimp::list_subscribe(array(
-    'apikey' => 'YOUR_API_KEY',
-    'id' => 'YOUR_LIST_ID',
-    'email_address' => 'foo@bar.com',
+use Travis\Mailchimp;
+
+$response = Mailchimp::run('lists/subscribe', array(
+	'apikey' => 'abcdefg-us2',
+    'id' => '123456',
+    'email' => array(
+    	'email' => 'foobar@gmail.com',
+    ),
+    'double_optin' => false,
+    'update_existing' => true,
+    'replace_interests' => false,
+    'send_welcome' => false,
 ));
 ```
 
-Just make sure you pass all the required fields.
+The ``apikey`` value must be included in your payload for each API request.

@@ -5,29 +5,25 @@ namespace Travis;
 class Mailchimp {
 
     /**
-     * Magic method for handling API calls.
+     * Method for handling API calls.
      *
      * @param   string  $method
-     * @param   array   $args
+     * @param   string  $apikey
+     * @param   array   $payload
      * @return  object
      */
-    public static function __callStatic($method, $args)
+    public static function run($method, $payload = array())
     {
-        // capture arguments
-        $arguments = isset($args[0]) ? $args[0] : array();
-
-        // catch error...
-        if (!isset($arguments['apikey'])) trigger_error('No API key provided.');
-
-        // capture api key
-        $api_key = $arguments['apikey'];
+        // determine apikey
+        $apikey = isset($payload['apikey']) ? $payload['apikey'] : null;
+        if (!$apikey) trigger_error('No API key provided.');
 
         // determine endpoint
-        list($ignore, $server) = explode('-', $api_key);
-        $endpoint = 'https://'.$server.'.api.mailchimp.com/1.3/?method='.self::camelcase($method);
+        list($ignore, $server) = explode('-', $apikey);
+        $endpoint = 'https://'.$server.'.api.mailchimp.com/2.0/'.$method.'.json';
 
         // build payload
-        $payload = urlencode(json_encode($arguments));
+        $payload = json_encode($payload);
 
         // setup curl request
         $ch = curl_init();
@@ -40,38 +36,24 @@ class Mailchimp {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
         $response = curl_exec($ch);
 
-        // catch errors
+        // catch error...
         if (curl_errno($ch))
         {
+            // report
             #$errors = curl_error($ch);
+
+            // close
             curl_close($ch);
 
             // return false
             return false;
         }
-        else
-        {
-            curl_close($ch);
 
-            // return array
-            return json_decode($response);
-        }
+        // close
+        curl_close($ch);
+
+        // return array
+        return json_decode($response);
     }
-
-    /**
-     * Return snake case conversion of string.
-     *
-     * @param   string  $str
-     * @return  string
-     */
-    protected static function camelcase($str)
-    {
-        return lcfirst(
-            preg_replace_callback('/(^|_)(.)/', function($matches)
-            {
-                return strtoupper($matches[2]);
-            }, strval($str))
-        );
-   }
 
 }
