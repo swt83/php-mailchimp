@@ -1,7 +1,6 @@
 {
     "name": "travis/mailchimp",
     "description": "A PHP library for working w/ the Mailchimp API.",
-    "homepage": "https://github.com/swt83/php-mailchimp",
     "license": "MIT",
     "authors": [
         {
