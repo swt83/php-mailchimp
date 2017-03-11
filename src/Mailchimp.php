@@ -2,8 +2,8 @@
 
 namespace Travis;
 
-class Mailchimp {
-
+class Mailchimp
+{
     /**
      * Method for handling API calls.
      *
@@ -67,7 +67,7 @@ class Mailchimp {
         if ((int) ex($response, 'status') >= 400)
         {
             // throw error
-            trigger_error(ex($response, 'detail'));
+            throw new \Exception(ex($response, 'detail'));
 
             // return false
             return false;
@@ -76,5 +76,4 @@ class Mailchimp {
         // return
         return $response;
     }
-
 }

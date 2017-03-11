@@ -19,7 +19,7 @@
         "travis/ex": "*"
     },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "Travis\\": "src/"
         }
     },
