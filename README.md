@@ -18,6 +18,8 @@ Call the ``run`` method and pass four params:
 ```php
 use Travis\Mailchimp;
 
+$hash = md5(strtolower($email));
+
 $response = Mailchimp::run('lists/'.$listid.'/members/'.$hash, 'put', $apikey, [
     'email_address' => $email,
     'status' => 'pending',
