@@ -20,21 +20,46 @@ use Travis\Mailchimp;
 
 $hash = md5(strtolower($email));
 
-$response = Mailchimp::run('lists/'.$listid.'/members/'.$hash, 'put', $apikey, [
-    'email_address' => $email,
-    'status' => 'pending',
-    'status_if_new' => 'subscribed',
-    'ip_opt' => $_SERVER['REMOTE_ADDR'],
-    'ip_signup' => $_SERVER['REMOTE_ADDR'],
-    'merge_vars' => [
-        'FNAME' => $first,
-        'LNAME' => $last,
-    ],
-]);
+		// make payload
+		$payload = [
+		    'email_address' => $email,
+		    'status_if_new' => 'subscribed',
+		    #'ip_opt' => $_SERVER['REMOTE_ADDR'],
+		    #'ip_signup' => $_SERVER['REMOTE_ADDR'],
+		    'merge_fields' => [
+		        'FNAME' => $first,
+		        'LNAME' => $last,
+		    ],
+		];
+
+		// try to subscribe them...
+		try
+		{
+			$payload['status'] = 'subscribed';
+			$response = Mailchimp::run('lists/'.$listid.'/members/'.$hash, 'put', $apikey, $payload);
+		}
+
+		// if fails...
+		catch (\Exception $e)
+		{
+			// try to pending them...
+			try
+			{
+				$payload['status'] = 'pending';
+    			$response = Mailchimp::run('lists/'.$listid.'/members/'.$hash, 'put', $apikey, $payload);
+			}
+
+			// if fails...
+	        catch (\Exception $e)
+	        {
+				// send email
+				die($e->getMessage());
+			}
+		}
 ```
 
 The new ``3.0`` API version they came out with is much more confusing that previous versions.  You will need to check the [API reference](http://developer.mailchimp.com/documentation/mailchimp/reference/overview/) to find out what request types you need to be making (GET, PUT, PATCH, DELETE, EDIT).  It's a mess.
 
 ### A note about pending vs. subscribed
 
-Notice the params ``status`` and ``status_if_new``.  Mailchimp no longer allows you to add someone to your list if they at any time had unsubscribed.  By marking ``status`` as ``pending`` and ``status_if_new`` as ``subscribed`` you can make it work as best you will be able.  People who had unsubscribed will get a double-optin from Mailchimp, but new people will not.
+The above example is the best way to do a subscribe.  This is to prevent a bunch of confirmation emails being sent to people who you are trying to sync but who are already subscribed to your list.
