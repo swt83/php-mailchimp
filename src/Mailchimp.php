@@ -10,9 +10,10 @@ class Mailchimp
      * @param   string  $method
      * @param   string  $request
      * @param   array   $payload
+     * @param   int     $timeout
      * @return  object
      */
-    public static function run($method, $request, $apikey, $payload = [])
+    public static function run($method, $request, $apikey, $payload = [], $timeout=30)
     {
         // make endpoint
         list($ignore, $server) = explode('-', $apikey);
@@ -35,7 +36,7 @@ class Mailchimp
         curl_setopt($ch, CURLOPT_URL, $endpoint.'?'.$payload_as_query);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_USERPWD, $username);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
