@@ -43,19 +43,12 @@ class Mailchimp
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($request));
         #curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload_as_json);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1); // CURL update caused breaking w/ Mailchimp API
         $response = curl_exec($ch);
 
-        // catch error...
-        if (curl_errno($ch))
+        if ($response === false)
         {
-            // report
-            #$errors = curl_error($ch);
-
-            // close
-            curl_close($ch);
-
-            // return false
-            return false;
+            throw new \Exception(curl_error($ch), curl_errno($ch));
         }
 
         // close
